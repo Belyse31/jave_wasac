@@ -65,8 +65,12 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendPaymentConfirmationEmail(String to, String reference, String amount) {
-        send(to, "WASAC/REG Payment Confirmation", "Dear customer,\n\nPayment " + reference + " of " + amount + " FRW has been received.", NotificationType.PAYMENT_CONFIRMATION);
+    public void sendPaymentConfirmationEmail(String to, String reference, String amount, String remainingBalance, String billStatus) {
+        send(to, "WASAC/REG Payment Confirmation",
+                "Dear customer,\n\nPayment " + reference + " of " + amount + " FRW has been received."
+                        + "\nRemaining balance: " + remainingBalance + " FRW"
+                        + "\nBill status: " + billStatus,
+                NotificationType.PAYMENT_CONFIRMATION);
     }
 
     private void send(String to, String subject, String body, NotificationType type) {

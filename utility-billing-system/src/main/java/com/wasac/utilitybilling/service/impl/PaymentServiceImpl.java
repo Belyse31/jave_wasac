@@ -69,8 +69,9 @@ public class PaymentServiceImpl implements PaymentService {
         }
         // Save payment after bill balance/status have been updated in the transaction.
         Payment saved = paymentRepository.save(payment);
-        // Notify customer about successful payment.
-        emailService.sendPaymentConfirmationEmail(bill.getCustomer().getEmail(), saved.getPaymentReference(), saved.getAmountPaid().toPlainString());
+        // Notify customer about successful payment and the remaining balance after this installment.
+        emailService.sendPaymentConfirmationEmail(bill.getCustomer().getEmail(), saved.getPaymentReference(), saved.getAmountPaid().toPlainString(),
+                bill.getOutstandingBalance().toPlainString(), bill.getStatus().name());
         // Audit payment for finance traceability.
         auditService.record("system", "PAYMENT_PROCESSING", null, "Recorded payment " + saved.getPaymentReference());
         // Return payment DTO including updated bill status and balance.

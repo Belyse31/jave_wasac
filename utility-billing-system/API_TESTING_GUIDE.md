@@ -423,6 +423,8 @@ After approval, the customer receives an email with the bill reference, billing 
 
 Role required: `ROLE_FINANCE`
 
+Bills can be paid in installments. Each payment reduces the bill `outstandingBalance`.
+
 ```http
 POST /api/payments
 Authorization: Bearer FINANCE_ACCESS_TOKEN
@@ -437,6 +439,24 @@ Content-Type: application/json
   "paymentDate": "2026-06-05"
 }
 ```
+
+Expected response includes the balance after this payment:
+
+```json
+{
+  "success": true,
+  "message": "Payment recorded. Remaining balance: 3380.00 FRW",
+  "data": {
+    "paymentReference": "PAY-1234567890",
+    "billReference": "BILL-202605-ABC12345",
+    "amountPaid": 15000,
+    "billOutstandingBalance": 3380.00,
+    "billStatus": "PARTIALLY_PAID"
+  }
+}
+```
+
+To finish the installment payment, record another payment using the same `billId` and an `amountPaid` equal to the remaining `billOutstandingBalance`.
 
 Payment methods:
 
@@ -455,6 +475,7 @@ Payment date cannot be in the future.
 Payment cannot exceed outstanding balance.
 If balance becomes zero, bill status becomes PAID.
 If balance remains greater than zero, bill status becomes PARTIALLY_PAID.
+The payment response and customer notification both show the remaining balance.
 ```
 
 ## 15. Forgot Password

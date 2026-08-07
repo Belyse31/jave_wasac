@@ -25,7 +25,8 @@ public class PaymentController {
     @PreAuthorize("hasRole('FINANCE')")
     @Operation(summary = "ROLE_FINANCE: record partial or full bill payment")
     ApiResponse<BillingDtos.PaymentResponse> record(@Valid @RequestBody BillingDtos.PaymentRequest request) {
-        return ApiResponse.ok("Payment recorded", service.record(request));
+        BillingDtos.PaymentResponse payment = service.record(request);
+        return ApiResponse.ok("Payment recorded. Remaining balance: " + payment.billOutstandingBalance().toPlainString() + " FRW", payment);
     }
 
     @GetMapping

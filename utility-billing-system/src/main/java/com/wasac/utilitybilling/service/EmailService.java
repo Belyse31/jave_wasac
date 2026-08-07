@@ -8,5 +8,5 @@ public interface EmailService {
     void sendStaffCredentialsEmail(String to, String fullName, String role, String temporaryPassword);
     void sendBillNotificationEmail(String to, String monthYear, String amount);
     void sendApprovedBillEmail(String to, String fullName, String billReference, String monthYear, String amount, String dueDate);
-    void sendPaymentConfirmationEmail(String to, String reference, String amount);
+    void sendPaymentConfirmationEmail(String to, String reference, String amount, String remainingBalance, String billStatus);
 }
